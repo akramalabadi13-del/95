@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>المتجر | مقاطعة برق</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+
+<canvas id="stars"></canvas>
+
+
+<nav class="navbar" id="navbar">
+  <ul>
+    <li><a href="index.html">الرئيسية</a></li>
+   <li><a href="#admins" id="admins-link">الإداريين</a></li>
+    <li><a href="rules.html">القوانين</a></li>
+    <li><a href="shop.html" class="active">المتجر</a></li>
+  </ul>
+</nav>
+
+
+<div class="coming-soon-container">
+  <h1>المتجر قيد الإنشاء</h1>
+  <p>قريباً سيتم إطلاق متجر مدينة 95 .</p>
+</div>
+
+
+<script>
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+
+  let starsArray = [];
+  const numberOfStars = 150;
+
+  function initStars() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    starsArray = [];
+    for (let i = 0; i < numberOfStars; i++) {
+      starsArray.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5 + 1.5,
+        speed: Math.random() * 0.3 + 0.05,
+        direction: Math.random() < 0.5 ? -1 : 1,
+        opacity: Math.random(),
+        opacityChange: 0.005 + Math.random() * 0.01
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let star of starsArray) {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200, 173, 94, ${star.opacity})`;
+      ctx.shadowColor = 'rgba(200, 173, 94, 0.7)';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+
+      star.opacity += star.opacityChange * star.direction;
+      if (star.opacity <= 0.1 || star.opacity >= 1) {
+        star.direction *= -1;
+      }
+
+      star.x += star.speed * star.direction;
+      if (star.x > canvas.width) star.x = 0;
+      if (star.x < 0) star.x = canvas.width;
+    }
+
+    requestAnimationFrame(drawStars);
+  }
+
+  window.addEventListener('resize', initStars);
+  initStars();
+  drawStars();
+</script>
+
+</body>
+</html>

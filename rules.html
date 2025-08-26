@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>قوانين مدينة 95 </title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  body {
+    margin: 0;
+    font-family: 'Tajawal', sans-serif;
+    background-color: #1E1E1E;
+    color: #C8AD5E;
+    direction: rtl;
+    overflow-x: hidden;
+    position: relative;
+    height: 100vh;
+  }
+
+  #stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    display: block;
+  }
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(30, 30, 30, 0.85);
+    box-shadow: 0 2px 10px rgba(200, 173, 94, 0.5);
+    z-index: 10000;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    font-weight: bold;
+  }
+
+  .navbar ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navbar ul li {
+    display: inline-block;
+  }
+
+  .navbar ul li a {
+    color: #C8AD5E;
+    text-decoration: none;
+    font-size: 18px;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+    padding: 8px 0;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .navbar ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 3px;
+    background-color: #C8AD5E;
+    transition: width 0.4s ease;
+  }
+
+  .navbar ul li a:hover::after,
+  .navbar ul li a.active::after {
+    width: 100%;
+    left: 0;
+    right: auto;
+  }
+
+  .navbar ul li a:active {
+    color: #D8C278;
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+
+  .navbar-placeholder {
+    height: 60px;
+  }
+
+  .rules-section {
+    max-width: 900px;
+    background: rgba(30, 30, 30, 0.85);
+    margin: 100px auto 60px auto;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(200, 173, 94, 0.7);
+    color: #C8AD5E;
+    font-size: 18px;
+    line-height: 1.8;
+    position: relative;
+    z-index: 10;
+    user-select: none;
+    
+  }
+
+  .rules-section h1 {
+    font-size: 36px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 700;
+    color: #D8C278;
+  }
+
+  .rules-section ol {
+    padding-inline-start: 20px;
+    margin: 0;
+  }
+
+  .rules-section ol li {
+    margin-bottom: 15px;
+  }
+</style>
+</head>
+<body>
+
+
+<canvas id="stars"></canvas>
+
+
+<nav class="navbar" id="navbar">
+  <ul>
+    <li><a href="index.html">الرئيسية</a></li>
+    <li><a href="#admins" id="admins-link">الإداريين</a></li>
+    <li><a href="rules.html" class="active">القوانين</a></li>
+    <li><a href="shop.html" class="active">المتجر</a></li>
+    
+  </ul>
+</nav>
+
+<div class="navbar-placeholder"></div>
+
+
+<section class="rules-section">
+  <h1>قوانين </h1>
+  <ol>
+    <li>احترام جميع الأعضاء واللاعبين.</li>
+    <li>عدم استخدام الغش أو الاستغلال.</li>
+    <li>الالتزام بالتعليمات الصادرة من الإدارة.</li>
+    <li>عدم الإساءة أو التجريح لأي عضو.</li>
+    <li>استخدام اللغة المناسبة داخل السيرفر.</li>
+    <li>عدم نشر روابط خارجية غير مصرح بها.</li>
+    <li>التبليغ عن أي مخالفات للإدارة فوراً.</li>
+    <li>احترام أوقات اللعب وعدم تعطيل سير اللعبة.</li>
+    <li>اتباع قوانين الرول بلاي بدقة وصدق.</li>
+  </ol>
+
+  
+</section>
+
+
+
+<script>
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let starsArray = [];
+  const numberOfStars = 150;
+
+  function initStars() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    starsArray = [];
+    for (let i = 0; i < numberOfStars; i++) {
+      starsArray.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5 + 1.5,
+        speed: Math.random() * 0.3 + 0.05,
+        direction: Math.random() < 0.5 ? -1 : 1,
+        opacity: Math.random(),
+        opacityChange: 0.005 + Math.random() * 0.01
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let star of starsArray) {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200, 173, 94, ${star.opacity})`;
+      ctx.shadowColor = 'rgba(200, 173, 94, 0.7)';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+
+      star.opacity += star.opacityChange * star.direction;
+      if (star.opacity <= 0.1 || star.opacity >= 1) {
+        star.direction *= -1;
+      }
+
+      star.x += star.speed * star.direction;
+      if (star.x > canvas.width) star.x = 0;
+      if (star.x < 0) star.x = canvas.width;
+    }
+
+    requestAnimationFrame(drawStars);
+  }
+
+  window.addEventListener('resize', initStars);
+  initStars();
+  drawStars();
+</script>
+
+</body>
+</html>
